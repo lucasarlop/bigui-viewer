@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import api from '../../services/api'
 
 import './styles.css'
 
@@ -8,21 +7,21 @@ export default class PetForm extends Component {
     super(props);
     this.state = {
       name:  '',
-      breed: '',
-      value: 'manga'
+      breed: ''
     };
 
-    this.changeName   = this.changeName.bind(this);
-    this.changeBreed  = this.changeBreed.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit      = this.handleSubmit.bind(this);
   }
 
-  changeName(event) {
-    this.setState({ name: event.target.value });
-  }
+  handleInputChange(event) {
+    const target = event.target;
+    const value  = target.type === 'checkbox' ? target.checked : target.value;
+    const name   = target.name;
 
-  changeBreed(event) {
-    this.setState({ breed: event.target.value });
+    this.setState({
+      [name]: value
+    });
   }
 
   handleSubmit(event) {
@@ -34,19 +33,24 @@ export default class PetForm extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
-          Name:
-          <textarea value={this.state.name} onChange={this.changeName} />
+          Name:<br />
+          <textarea name="name" value={this.state.name} onChange={this.handleInputChange} />
         </label>
 
+        <br /><br />
+
         <label>
-          Choose a breed:
-          <select value={this.state.breed} onChange={this.changeBreed}>
+          Choose a breed:<br />
+          <select name="breed" value={this.state.breed} onChange={this.handleInputChange}>
             <option value="doberman">Doberman</option>
             <option value="xiaou">XiaouMi</option>
             <option value="shiba">Shiba-Inu</option>
             <option value="husk">Husk</option>
           </select>
         </label>
+
+        <br /><br />
+        
         <input type="submit" value="Enviar" />
       </form>
     );
